@@ -1,0 +1,1 @@
+xcopy /Y "bin\Release\netstandard2.1\AutoKnifeAttack.dll" "C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\BepInEx\plugins"

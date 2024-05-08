@@ -1,0 +1,9 @@
+# QuickItemSwap .gitignore
+# Copyright (c) 2024 Yan01h
+# MIT license
+
+# Visual Studio
+.vscode
+bin
+obj
+*.csproj.user
