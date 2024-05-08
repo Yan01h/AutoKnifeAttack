@@ -10,7 +10,7 @@ A mod for Lethal Company that attacks with the knife in perfect intervals while 
 ## Installation (Manual)
 
 1. Download [BepInEx](https://thunderstore.io/c/lethal-company/p/BepInEx/BepInExPack/) and install it
-2. Download this mod on Thunderstore or build it yourself
+2. Download this mod on [Thunderstore](https://thunderstore.io/c/lethal-company/p/HydratedDragon/AutoKnifeAttack/) or build it yourself
 3. Place the `BetterItemHandling.dll` in the `Lethal Company\BepInEx\plugins` folder
 4. Place the `Yan01h.BetterItemHandling.cfg` in the `Lethal Company\BepInEx\config` folder
 5. Run the game!
