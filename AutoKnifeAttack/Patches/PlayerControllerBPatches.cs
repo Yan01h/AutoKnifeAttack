@@ -1,28 +1,35 @@
-// Copyright (c) 2024 Yan01h
-// MIT license
-
 using GameNetcodeStuff;
 using HarmonyLib;
+using Hax;
+using JetBrains.Annotations;
 using UnityEngine;
 
-namespace AutoKnifeAttack.Patches
+[HarmonyPatch(typeof(PlayerControllerB))]
+internal class AutomaticKnifePatch
 {
-    [HarmonyPatch(typeof(PlayerControllerB))]
-    internal class PlayerControllerBPatches
-    {
-        private static float _timeAtLastAttack = 0.0f;
+    internal static float AttackCooldown = 0.07f;
+    private static float AttackDelay = 0.0f;
+    private static bool IsUsingAttack => IngamePlayerSettings.Instance.playerInput.actions.FindAction("ActivateItem", false).IsPressed();
 
-        [HarmonyPostfix]
-        [HarmonyPatch("Update")]
-        internal static void ItemActivatePostfix(PlayerControllerB __instance)
+    [HarmonyPostfix]
+    [HarmonyPatch("Update")]
+    internal static void ItemActivatePostfix(PlayerControllerB __instance)
+    {
+        if (GameNetworkManager.Instance.localPlayerController is PlayerControllerB localPlayer && localPlayer.actualClientId == __instance.actualClientId) return;
+        if (__instance.currentlyHeldObjectServer is GrabbableObject item && item is KnifeItem)
         {
-            if (__instance.currentlyHeldObjectServer && __instance.currentlyHeldObjectServer.GetType() == typeof(KnifeItem))
+
+            if (IsUsingAttack)
             {
-                bool attack = IngamePlayerSettings.Instance.playerInput.actions.FindAction("ActivateItem", false).IsPressed();
-                if (attack && Time.realtimeSinceStartup - _timeAtLastAttack > 0.43f)
+                AttackDelay += Time.deltaTime;
+                if (AttackDelay >= AttackCooldown)
                 {
-                    _timeAtLastAttack = Time.realtimeSinceStartup;
-                    __instance.currentlyHeldObjectServer.UseItemOnClient(true);
+                    if (item.RequireCooldown())
+                    {
+                        return;
+                    }
+                    AttackDelay = 0f;
+                    item.UseItemOnClient(true);
                 }
             }
         }
