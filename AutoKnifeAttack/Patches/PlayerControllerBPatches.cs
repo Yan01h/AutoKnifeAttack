@@ -1,7 +1,5 @@
 using GameNetcodeStuff;
 using HarmonyLib;
-using Hax;
-using JetBrains.Annotations;
 using UnityEngine;
 
 [HarmonyPatch(typeof(PlayerControllerB))]
